@@ -3,6 +3,7 @@ import pandas as pd
 import re
 from datetime import date
 import random
+from pyhive import hive
 
 # def assemble_sql():
 #     # Step 1. Get filter values from sidebar
@@ -24,7 +25,8 @@ import random
 
 def display_sidebar_tab1():
     st.sidebar.header("🔍 Filter Conditions")
-    
+
+    session_date_range = st.sidebar.slider("Session Start Dt", value=(date(2025, 4, 26), date(2025, 5, 2)))
     platforms = st.sidebar.multiselect("Platform", ["Apps: Android", "Apps: iOS", "dWeb", "mWeb", "other"], default=["Apps: Android", "Apps: iOS"])
     auction_type = st.sidebar.selectbox("Auction Type", ["(All)", "Auction", "Fixed Price", "Best Offer"])
     bsns_vrtcl_name = st.sidebar.selectbox("Bsns Vrtcl Name", ["(All)", "Electronics", "Fashion", "Collectibles"])
@@ -34,12 +36,23 @@ def display_sidebar_tab1():
     price_bucket = st.sidebar.selectbox("Price Bucket", ["(All)", "$0-10", "$10-50", "$50+"])
     site = st.sidebar.selectbox("Site", ["(All)", "US", "UK", "DE", "AU"])
     traffic_source = st.sidebar.selectbox("Traffic Source Level1", ["(All)", "SEO", "SEM", "Email", "Push", "Direct"])
-    session_date_range = st.sidebar.slider("Session Start Dt", value=(date(2025, 4, 26), date(2025, 5, 2)))
+    engmnt_lv1_desc = st.sidebar.selectbox("Engagement Level 1", ["(All)", "Click", "Hover", "Scroll", "Expand"])
+    expertise_desc = st.sidebar.selectbox("Expertise Desc", ["(All)", "Beginner", "Intermediate", "Advanced"])
+    b2c_c2c = st.sidebar.selectbox("B2C/C2C", ["(All)", "B2C", "C2C"])
+    avip_cvip = st.sidebar.selectbox("AVIP/CVIP", ["(All)", "AVIP", "CVIP"])
+    msku_ind = st.sidebar.selectbox("MSKU Indicator", ["(All)", "Y", "N"])
+    fcsd_vrtcl_name = st.sidebar.selectbox("FCSD Vrtcl Name", ["(All)", "Parts", "Accessories", "Tools"])
+    itm_condition = st.sidebar.selectbox("Item Condition", ["(All)", "New", "Used", "Refurbished"])
+    viewport_width = st.sidebar.selectbox("Viewport Width", ["(All)", "<=768px", "769-1024px", ">1024px"])
+    source_page_name = st.sidebar.selectbox("Source Page Name", ["(All)", "Homepage", "Search", "View Item", "Cart"])
 
     return (
         platforms, auction_type, bsns_vrtcl_name, buyer_segment,
         enthusiasts_yn, new_buyer_yn, price_bucket, site,
-        traffic_source, session_date_range
+        traffic_source, session_date_range,
+        engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
+        msku_ind, fcsd_vrtcl_name, itm_condition,
+        viewport_width, source_page_name
     )
 
 def display_sidebar_tab2():
@@ -52,6 +65,7 @@ def display_sidebar_tab2():
         "Dwell Time Per View (Sec)"
     ], key="metric_tab")
 
+    session_date_range = st.sidebar.slider("Session Start Dt", value=(date(2025, 4, 26), date(2025, 5, 2)), key="session_date_range_2")
     auction_type = st.sidebar.selectbox("Auction Type", ["(All)", "Auction", "Fixed Price", "Best Offer"], key="auction_type_2")
     bsns_vrtcl_name = st.sidebar.selectbox("Bsns Vrtcl Name", ["(All)", "Electronics", "Fashion", "Collectibles"], key="bsns_vrtcl_name_2")
     buyer_segment = st.sidebar.selectbox("Buyer Fm Segment", ["(All)", "Lifestage", "Gender", "Income"], key="buyer_segment_2")
@@ -60,18 +74,31 @@ def display_sidebar_tab2():
     price_bucket = st.sidebar.selectbox("Price Bucket", ["(All)", "$0-10", "$10-50", "$50+"], key="price_bucket_2")
     site = st.sidebar.selectbox("Site", ["(All)", "US", "UK", "DE", "AU"], key="site_2")
     traffic_source = st.sidebar.selectbox("Traffic Source Level1", ["(All)", "SEO", "SEM", "Email", "Push", "Direct"], key="traffic_source_2")
-    session_date_range = st.sidebar.slider("Session Start Dt", value=(date(2025, 4, 26), date(2025, 5, 2)), key="session_date_range_2")
+    engmnt_lv1_desc = st.sidebar.selectbox("Engagement Level 1", ["(All)", "Click", "Hover", "Scroll", "Expand"])
+    expertise_desc = st.sidebar.selectbox("Expertise Desc", ["(All)", "Beginner", "Intermediate", "Advanced"])
+    b2c_c2c = st.sidebar.selectbox("B2C/C2C", ["(All)", "B2C", "C2C"])
+    avip_cvip = st.sidebar.selectbox("AVIP/CVIP", ["(All)", "AVIP", "CVIP"])
+    msku_ind = st.sidebar.selectbox("MSKU Indicator", ["(All)", "Y", "N"])
+    fcsd_vrtcl_name = st.sidebar.selectbox("FCSD Vrtcl Name", ["(All)", "Parts", "Accessories", "Tools"])
+    itm_condition = st.sidebar.selectbox("Item Condition", ["(All)", "New", "Used", "Refurbished"])
+    viewport_width = st.sidebar.selectbox("Viewport Width", ["(All)", "<=768px", "769-1024px", ">1024px"])
+    source_page_name = st.sidebar.selectbox("Source Page Name", ["(All)", "Homepage", "Search", "View Item", "Cart"])
 
     return (
         auction_type, bsns_vrtcl_name, buyer_segment,
         enthusiasts_yn, new_buyer_yn, price_bucket, site,
-        traffic_source, session_date_range, metric_tab
+        traffic_source, session_date_range, metric_tab,
+        engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
+        msku_ind, fcsd_vrtcl_name, itm_condition,
+        viewport_width, source_page_name
     )
 
 # ===== Dummy SQL Generator =====
 def generate_mysql_query(
     platforms, auction_type, bsns_vrtcl_name, buyer_segment,
-    enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range
+    enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
+    engmnt_lv1_desc=None, expertise_desc=None, b2c_c2c=None, avip_cvip=None, msku_ind=None, fcsd_vrtcl_name=None, itm_condition=None,
+    viewport_width=None, source_page_name=None
 ):
     filters = []
 
@@ -88,6 +115,17 @@ def generate_mysql_query(
     filters.append(build_condition("price_bucket", price_bucket))
     filters.append(build_condition("site", site))
     filters.append(build_condition("traffic_source", traffic_source))
+
+    # Add new variables to filter logic
+    filters.append(build_condition("engagement_lv1_desc", engmnt_lv1_desc))
+    filters.append(build_condition("expertise_desc", expertise_desc))
+    filters.append(build_condition("b2c_c2c", b2c_c2c))
+    filters.append(build_condition("avip_cvip", avip_cvip))
+    filters.append(build_condition("msku_indicator", msku_ind))
+    filters.append(build_condition("fcsd_vertical_name", fcsd_vrtcl_name))
+    filters.append(build_condition("item_condition", itm_condition))
+    filters.append(build_condition("viewport_width", viewport_width))
+    filters.append(build_condition("source_page_name", source_page_name))
 
     if platforms:
         platform_condition = "platform IN (" + ",".join(f"'{p}'" for p in platforms) + ")"
@@ -112,6 +150,18 @@ def load_data():
         return df
     except FileNotFoundError:
         st.error("❌ Cannot find data.csv. Please make sure it's in the same directory.")
+        st.stop()
+
+
+def load_data_hive():
+    try:
+        conn = hive.Connection(host='your_hive_host', port=10000, username='your_username', database='your_database')
+        query = "SELECT * FROM your_table"
+        df = pd.read_sql(query, conn)
+        conn.close()
+        return df
+    except Exception as e:
+        st.error(f"❌ Hive query failed: {e}")
         st.stop()
 
 def reshape_data(df_raw):
@@ -144,7 +194,11 @@ def calculate_percentage(df_flat):
     df_combined["Surface Rate"] = df_combined["serve"] / df_combined["pv"]
     df_combined["Surface to View Rate"] = df_combined["view"] / df_combined["serve"]
     df_combined["Surface to Engagement Rate"] = df_combined["engage"] / df_combined["serve"]
-    df_combined["Dwell Time"] = df_combined["dwelltime"]
+    df_combined["Dwell Time"] = df_combined["dwelltime"] / df_combined["view"]
+
+    # Remove rows where all four metrics are null
+    metrics = ["Surface Rate", "Surface to View Rate", "Surface to Engagement Rate", "Dwell Time"]
+    df_combined = df_combined.dropna(subset=metrics, how="all")
 
     df_summary = df_combined[[
         "module1", "module2",
@@ -155,6 +209,7 @@ def calculate_percentage(df_flat):
     ]].rename(columns={
         "Dwell Time": "Dwell Time Per View (Sec)"
     })
+
     return df_summary
 
 def camel_to_words(text):
@@ -195,15 +250,23 @@ def format_display_table(df_summary):
 def df_to_clean_html(df):
     html = """
     <style>
+    .table-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        margin: auto;
+    }
     .custom-table {
         border-collapse: collapse;
         width: 100%;
         font-family: sans-serif;
         font-size: 15px;
+        table-layout: auto;
     }
     .custom-table th, .custom-table td {
         padding: 8px 12px;
         text-align: left;
+        word-break: break-word;
     }
     .custom-table td {
         border: none;
@@ -212,6 +275,7 @@ def df_to_clean_html(df):
         border-bottom: 1px solid #ccc;
     }
     </style>
+    <div class="table-container">
     <table class="custom-table">
     <thead><tr>
     """
@@ -224,7 +288,7 @@ def df_to_clean_html(df):
         for val in row:
             html += f"<td>{val}</td>"
         html += "</tr>"
-    html += "</tbody></table>"
+    html += "</tbody></table></div>"
     return html
 
 import plotly.express as px
@@ -335,21 +399,32 @@ def main():
             (
                 platforms, auction_type, bsns_vrtcl_name, buyer_segment,
                 enthusiasts_yn, new_buyer_yn, price_bucket, site,
-                traffic_source, session_date_range
+                traffic_source, session_date_range,
+                engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
+                msku_ind, fcsd_vrtcl_name, itm_condition,
+                viewport_width, source_page_name
             ) = display_sidebar_tab1()
 
-        sql = generate_mysql_query(
+        # Collect all sidebar inputs first
+        submit = st.sidebar.button("Submit", type="primary")
+        sql = None
+        if submit:
+            sql = generate_mysql_query(
             platforms, auction_type, bsns_vrtcl_name, buyer_segment,
-            enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range
-        )
+            enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
+            engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip, msku_ind, fcsd_vrtcl_name, itm_condition,
+            viewport_width, source_page_name
+            )
 
         st.code(sql, language="sql")
         df_raw = load_data()
+        # df_raw = load_data_hive()
         df_flat = reshape_data(df_raw)
         df_summary = calculate_percentage(df_flat)
         df_render = format_display_table(df_summary)
 
         st.title("Vi Modules Surface/ View/ Engagement")
+        st.set_page_config(layout="wide")
         st.markdown(df_to_clean_html(df_render), unsafe_allow_html=True)
 
     elif tab_selection == "📊 dWeb Heatmap":
@@ -357,17 +432,28 @@ def main():
             (
                 auction_type, bsns_vrtcl_name, buyer_segment,
                 enthusiasts_yn, new_buyer_yn, price_bucket, site,
-                traffic_source, session_date_range, metric_tab
+                traffic_source, session_date_range, metric_tab,
+                engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
+                msku_ind, fcsd_vrtcl_name, itm_condition,
+                viewport_width, source_page_name
             ) = display_sidebar_tab2()
 
-        # Just pass a dummy list to generate_mysql_query in place of platforms
-        sql = generate_mysql_query(
-            [], auction_type, bsns_vrtcl_name, buyer_segment,
-            enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range
-        )
+        # Collect all sidebar inputs first
+        submit = st.sidebar.button("Submit", type="primary")
+        sql = None
+        if submit:
+            # Just pass a dummy list to generate_mysql_query in place of platforms
+            sql = generate_mysql_query(
+                [], auction_type, bsns_vrtcl_name, buyer_segment,
+                enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
+                engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
+                msku_ind, fcsd_vrtcl_name, itm_condition,
+                viewport_width, source_page_name
+            )
 
         st.code(sql, language="sql")
         df_raw = load_data()
+        # df_raw = load_data_hive()
         df_flat = reshape_data(df_raw)
         df_summary = calculate_percentage(df_flat)
 

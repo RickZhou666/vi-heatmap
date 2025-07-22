@@ -6,10 +6,13 @@ def generate_mysql_query(
 ):
     filters = []
 
-    def build_condition(field, value):
-        if value == "(All)" or not value:
-            return None
-        return f"{field} = '{value}'"
+    def build_condition(field, values):
+        if not values or values == ["(All)"]:
+                return None
+        if isinstance(values, list):
+            values_str = ", ".join(f"'{v}'" for v in values)
+            return f"{field} IN ({values_str})"
+        return f"{field} = '{values}'"
 
     filters.append(build_condition("auction_type", auction_type))
     filters.append(build_condition("business_vertical", bsns_vrtcl_name))

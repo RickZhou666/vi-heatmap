@@ -135,7 +135,7 @@ def load_data():
         st.stop()
 
 
-def load_data_hive():
+def load_hive_data():
     try:
         conn = hive.Connection(host='your_hive_host', port=10000, username='your_username', database='your_database')
         query = "SELECT * FROM your_table"
@@ -398,7 +398,7 @@ def main():
 
         st.code(sql, language="sql")
         df_raw = load_data()
-        # df_raw = load_data_hive()
+        # df_raw = load_hive_data()
         df_flat = reshape_data(df_raw)
         df_summary = calculate_percentage(df_flat)
         df_render = format_display_table(df_summary)
@@ -433,7 +433,7 @@ def main():
 
         st.code(sql, language="sql")
         df_raw = load_data()
-        # df_raw = load_data_hive()
+        # df_raw = load_hive_data()
         df_flat = reshape_data(df_raw)
         df_summary = calculate_percentage(df_flat)
 

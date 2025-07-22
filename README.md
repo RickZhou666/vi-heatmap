@@ -26,6 +26,7 @@ $ docker run -p 8501:8501 vi-heatmap-app
 
 # Tips
 
+## HTML/CSS Tips
 1. there should not be any empty line between html, otherwise it's will be malformed
 ```html
 GOOD
@@ -51,4 +52,10 @@ In CSS, the "padding" property can be set in several ways:
         - padding-bottom
         - padding-left
         - padding (shorthand for all four sides)
+```
+
+## VSC tips
+1. how to regexp search for starting empty lines
+```bash
+^\s*$
 ```

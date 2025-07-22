@@ -26,6 +26,7 @@ def vi_modules_tab():
         st.code(sql, language="sql")
         with st.spinner("Data retrieving in progress..."):
             df_raw = load_data()
+            # df_raw = load_hive_data()
         df_flat = reshape_data(df_raw)
         df_summary = calculate_percentage(df_flat)
         df_render = format_display_table(df_summary)

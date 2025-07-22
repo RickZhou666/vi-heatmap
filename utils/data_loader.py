@@ -15,7 +15,7 @@ def load_data():
         st.stop()
 
 
-def load_data_hive():
+def load_hive_data():
     try:
         conn = hive.Connection(host='your_hive_host', port=10000, username='your_username', database='your_database')
         query = "SELECT * FROM your_table"

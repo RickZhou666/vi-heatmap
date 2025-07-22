@@ -53,13 +53,68 @@ def calculate_percentage(df_flat):
 def camel_to_words(text):
     return re.sub(r'(?<!^)(?=[A-Z])', ' ', text)
 
+sub_module_mapping = {
+    "Addtocart": "Add to cart",
+    "AddtoWatchlist": "Add to Watchlist",
+    "AllItems": "All Items",
+    "AllRatings": "All Ratings",
+    "BuyBox": "Buy Box",
+    "BuyBoxCTA": "Buy Box CTA",
+    "BuyItNow": "Buy It Now",
+    "ContactSeller": "Contact Seller",
+    "ConversationalSignals": "Conversational Signals",
+    "ImageEnlargeArrowClick": "Image Enlarge Arrow Click",
+    "ImageThumbnailsArrowClick": "Image Thumbnails Arrow Click",
+    "ItemDescriptionfromtheSeller": "Item Description from the Seller",
+    "ItemSpecifics": "Item Specifics",
+    "MainImageClick": "Main Image Click",
+    "MainImageScrollArrowClick": "Main Image Scroll Arrow Click",
+    "MainImageSwipe": "Main Image Swipe",
+    "Makeoffer": "Make offer",
+    "Payment": "Payment",
+    "Picture": "Picture",
+    "PictureOverall": "Picture Overall",
+    "Placebid": "Place bid",
+    "PriceDetails": "Price Details",
+    "ProductStarRating": "Product Star Rating",
+    "Promotions": "Promotions",
+    "Returns": "Returns",
+    "SaveSeller": "Save Seller",
+    "SeeAllFeedback": "See All Feedback",
+    "SellerCardATF": "Seller Card ATF",
+    "SellerCardATFOverall": "Seller Card ATF Overall",
+    "SellerCardBTFOverall": "Seller Card BTF Overall",
+    "SellerCardShevron": "Seller Card Shevron",
+    "SellerFeedback": "Seller Feedback",
+    "SellerFeedbackBTFOverall": "Seller Feedback BTF Overall",
+    "SellerLogo": "Seller Logo",
+    "SellerLogoNameFeedback": "Seller Logo Name Feedback",
+    "SellerName": "Seller Name",
+    "SellerSOI": "Seller SOI",
+    "SellNow": "Sell Now",
+    "Shipping": "Shipping",
+    "ShippingReturnsPayment": "Shipping Returns Payment",
+    "ShopWithConfidence": "Shop With Confidence",
+    "SMECoupon": "SME Coupon",
+    "StoreCategories": "Store Categories",
+    "ThisItem": "This Item",
+    "ThumbnailsClick": "Thumbnails Click",
+    "ThumbnailsScroll": "Thumbnails Scroll",
+    "UrgencySignal": "Urgency Signal",
+    "VibrancyCoupon": "Vibrancy Coupon",
+    "VisitStore": "Visit Store",
+    "VolumePricing": "Volume Pricing",
+    "WatchIcononImage": "Watch Icon on Image"
+}
+
 def format_display_table(df_summary):
     df_display = df_summary.copy()
     df_display = df_display.rename(columns={
         "module1": "Bucket",
         "module2": "Sub Modules"
     })
-    df_display["Sub Modules"] = df_display["Sub Modules"].apply(camel_to_words)
+    # df_display["Sub Modules"] = df_display["Sub Modules"].apply(camel_to_words)
+    df_display["Sub Modules"] = df_display["Sub Modules"].map(sub_module_mapping).fillna(df_display["Sub Modules"])
     df_display = df_display[[
         "Bucket", "Sub Modules",
         "Surface Rate",

@@ -11,8 +11,6 @@ tab = st.radio(
         label_visibility="collapsed"
     )
 
-# dweb_heatmap_tab()
-
 if tab == "📋 VI Modules Surface/ View/ Engagement":
     vi_modules_tab()
 

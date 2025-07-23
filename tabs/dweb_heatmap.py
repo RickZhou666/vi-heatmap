@@ -5,6 +5,30 @@ from utils.data_transform import reshape_data, calculate_percentage, format_disp
 from utils.query_generator import generate_mysql_query
 import pandas as pd
 
+
+def get_shaded_blue(value_str, min_val=0.0, max_val=1.0):
+    """Convert a percentage string like '99.7%' to a blue color hex code."""
+    try:
+        value = float(value_str.strip('%')) / 100
+    except:
+        return "#d3d3d3"  # fallback for N/A or invalid
+
+    # Normalize
+    ratio = (value - min_val) / (max_val - min_val)
+    ratio = max(0, min(1, ratio))
+
+    # Blue color interpolation from light to dark
+    # Light: #cfe2f3  → RGB(207,226,243)
+    # Dark:  #08306b  → RGB(8,48,107)
+    r = int(207 + (8 - 207) * ratio)
+    g = int(226 + (48 - 226) * ratio)
+    b = int(243 + (107 - 243) * ratio)
+    return f"rgb({r},{g},{b})"
+
+def render_colored_block(label, value):
+    color = get_shaded_blue(value)
+    return f"<div style='background-color:{color}; padding:10px; border-radius:4px;'><b>{label} :</b> {value}</div>"
+
 def render_module_dashboard(source_data):
     required_modules = [
         "SME Coupon", "Picture Overall", "Thumbnails Click", "Urgency Signal",
@@ -47,7 +71,7 @@ def render_module_dashboard(source_data):
     # === SME Coupon Bar ===
     st.markdown(
         f"""
-        <div style='background-color:#9ad3d4; padding:10px; font-size:18px;'>
+        <div style='background-color:{get_shaded_blue(data['SME Coupon'])}; padding:10px; font-size:18px;'>
             <b>SME Coupon:</b> {data['SME Coupon']}
         </div>
         """,
@@ -60,28 +84,28 @@ def render_module_dashboard(source_data):
     with left_col:
         st.markdown(
             f"""
-            <div style='background-color:#1f3b73; color:white; padding:10px; padding-bottom: 50px; font-size:16px; border: 3px solid black;'>
+            <div style='background-color:{get_shaded_blue(data['Picture Overall'])}; color:white; padding:10px; padding-bottom: 50px; font-size:16px; border: 3px solid black;'>
                 <b>Picture Overall:</b> {data['Picture Overall']}
                 <div style='display:grid; grid-template-columns: 1fr 7fr; gap:2px; margin-top:10px;'>
                     <div style='display: grid; grid-template-rows: 7fr 3fr; height: 400px;'>
-                        <div style='background-color:#17456f; color:white; writing-mode: sideways-lr; text-align:right; padding:10px; border: 3px solid white;'>
+                        <div style='background-color:{get_shaded_blue(data['Thumbnails Click'])}; color:white; writing-mode: sideways-lr; text-align:right; padding:10px; border: 3px solid white;'>
                             Thumbnails Click:<br>{data['Thumbnails Click']}
                         </div>
-                        <div style='background-color:#1f3b73; color:white; writing-mode: sideways-lr; text-align:right; padding:6px; border: 3px solid white;'>
+                        <div style='background-color:{get_shaded_blue(data['Image Thumbnails Arrow Click'])}; color:white; writing-mode: sideways-lr; text-align:right; padding:6px; border: 3px solid white;'>
                             Image Thumbnails Arrow Click:<br>{data['Image Thumbnails Arrow Click']}
                         </div>
                     </div>
-                    <div style='position: relative; background-color:#1f3b73; color:white; padding:10px; height:400px; width:100%; border:1px solid white;'>
-                        <div style='position: absolute; top: 10px; left: 10px; background-color:#50a4c8; padding:6px; font-size:14px; border: 3px solid white;'>
+                    <div style='position: relative; background-color:{get_shaded_blue(data['Picture Overall'])}; color:white; padding:10px; height:400px; width:100%; border:1px solid white;'>
+                        <div style='position: absolute; top: 10px; left: 10px; background-color:{get_shaded_blue(data['Urgency Signal'])}; padding:6px; font-size:14px; border: 3px solid white;'>
                             Urgency Signal: {data['Urgency Signal']}
                         </div>
-                        <div style='position: absolute; top: 10px; right: 155px; background-color:#1f3b73; color:white; padding:6px; width:150px; border: 3px solid white;'>
+                        <div style='position: absolute; top: 10px; right: 155px; background-color:{get_shaded_blue(data['Image Enlarge Arrow Click'])}; color:white; padding:6px; width:150px; border: 3px solid white;'>
                             Image Enlarge Arrow Click:<br>{data['Image Enlarge Arrow Click']}
                         </div>
-                        <div style='position: absolute; top: 10px; right: 0px; background-color:#1f3b73; color:white; padding:6px; width:150px; border: 3px solid white;'>
+                        <div style='position: absolute; top: 10px; right: 0px; background-color:{get_shaded_blue(data['Watch Icon on Image'])}; color:white; padding:6px; width:150px; border: 3px solid white;'>
                             Watch Icon on Image:<br>{data['Watch Icon on Image']}
                         </div>
-                        <div style='position: absolute; top: 40%; right: 0px; background-color:#1f3b73; color:white; padding:6px; width:170px; border: 3px solid white;'>
+                        <div style='position: absolute; top: 40%; right: 0px; background-color:{get_shaded_blue(data['Main Image Scroll Arrow Click'])}; color:white; padding:6px; width:170px; border: 3px solid white;'>
                             Main Image Scroll Arrow Click:<br>{data['Main Image Scroll Arrow Click']}
                         </div>
                         <div style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size:18px; font-weight:bold; text-align: center;'>
@@ -90,7 +114,7 @@ def render_module_dashboard(source_data):
                     </div>
                 </div>
             </div>
-            <div style='background-color:#3c7397; padding:10px; font-size:18px; color:white;'>
+            <div style='background-color:{get_shaded_blue(data['Sell Now'])}; padding:10px; font-size:18px; color:white;'>
                 <b>Sell Now:</b> {data['Sell Now']}
             </div>
             """, unsafe_allow_html=True
@@ -98,72 +122,43 @@ def render_module_dashboard(source_data):
 
 
     with right_col:
+        header_color = get_shaded_blue(data['Seller Card ATF Overall'])
         st.markdown(f"""
-        <div style='background-color:#1f3b73; color:white; padding:10px; font-size:16px; border: 2px solid white;'>
+        <div style='background-color:{header_color}; color:white; padding:10px; font-size:16px; border: 2px solid white;'>
             <b>Seller Card ATF Overall:</b> {data['Seller Card ATF Overall']}
             <div style='display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; margin-top:10px;'>
-                <div style='background-color:#1f3b73; color:white; padding:6px; border:1px solid white;'>Seller Logo:<br>{data['Seller Logo']}</div>
-                <div style='background-color:#1f3b73; color:white; padding:6px; border:1px solid white;'>Seller Name:<br>{data['Seller Name']}</div>
-                <div style='background-color:#1f3b73; color:white; padding:6px; border:1px solid white;'>Seller Feedback:<br>{data['Seller Feedback']}</div>
-                <div style='background-color:#1f3b73; color:white; padding:6px; border:1px solid white;'>Seller SOI:<br>{data['Seller SOI']}</div>
-                <div style='background-color:#1f3b73; color:white; padding:6px; border:1px solid white;'>Contact Seller:<br>{data['Contact Seller']}</div>
+                <div style='background-color:{get_shaded_blue(data['Seller Logo'])}; color:white; padding:6px; border:1px solid white;'>Seller Logo:<br>{data['Seller Logo']}</div>
+                <div style='background-color:{get_shaded_blue(data['Seller Name'])}; color:white; padding:6px; border:1px solid white;'>Seller Name:<br>{data['Seller Name']}</div>
+                <div style='background-color:{get_shaded_blue(data['Seller Feedback'])}; color:white; padding:6px; border:1px solid white;'>Seller Feedback:<br>{data['Seller Feedback']}</div>
+                <div style='background-color:{get_shaded_blue(data['Seller SOI'])}; color:white; padding:6px; border:1px solid white;'>Seller SOI:<br>{data['Seller SOI']}</div>
+                <div style='background-color:{get_shaded_blue(data['Contact Seller'])}; color:white; padding:6px; border:1px solid white;'>Contact Seller:<br>{data['Contact Seller']}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown("""
-        <div style="padding:10px 0; display:flex; flex-direction:column; gap:8px;">
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Price Details :</b> """ + data['Price Details'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Vibrancy Coupon :</b> """ + data['Vibrancy Coupon'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Volume Pricing :</b> """ + data['Volume Pricing'] + """
-            </div>
-            <div style="background-color:#1f3b73; color:white; padding:10px; border-radius:4px;">
-                <b>Buy It Now:</b> """ + data['Buy It Now'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Place bid :</b> """ + data['Place bid'] + """
-            </div>
-            <div style="background-color:#1f3b73; color:white; padding:10px; border-radius:4px;">
-                <b>Add to cart :</b> """ + data['Add to cart'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Make offer :</b> """ + data['Make offer'] + """
-            </div>
-            <div style="background-color:#1f3b73; color:white; padding:10px; border-radius:4px;">
-                <b>Add to Watchlist :</b> """ + data['Add to Watchlist'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Conversational Signals :</b> """ + data['Conversational Signals'] + """
-            </div>
-            <div style="background-color:#1f3b73; color:white; padding:10px; border-radius:4px;">
-                <b>Shipping :</b> """ + data['Shipping'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Returns :</b> """ + data['Returns'] + """
-            </div>
-            <div style="background-color:#1f3b73; color:white; padding:10px; border-radius:4px;">
-                <b>Payment :</b> """ + data['Payment'] + """
-            </div>
-            <div style="background-color:#a0d6cc; padding:10px; border-radius:4px;">
-                <b>Shop With Confidence :</b> """ + data['Shop With Confidence'] + """
-            </div>
+        right_col_blocks = "".join([
+        render_colored_block(key, data[key]) for key in [
+            "Price Details", "Vibrancy Coupon", "Volume Pricing", "Buy It Now", "Place bid",
+            "Add to cart", "Make offer", "Add to Watchlist", "Conversational Signals",
+            "Shipping", "Returns", "Payment", "Shop With Confidence"
+            ]
+        ])
+
+        st.markdown(f"""
+        <div style='padding:10px 0; display:flex; flex-direction:column; gap:8px;'>
+            {right_col_blocks}
         </div>
         """, unsafe_allow_html=True)
 
     # === Middile Grid ===
     st.markdown(
         f"""
-        <div style='background-color:#32688a; color:white; padding:20px; font-size:18px; margin-bottom:10px; height: 200px'>
-            <b>Item Specifics:</b> 99.0%
+        <div style='background-color:{get_shaded_blue(data['Item Specifics'])}; color:white; padding:20px; font-size:18px; margin-bottom:10px; height: 200px'>
+            <b>Item Specifics:</b> {data['Item Specifics']}
         </div>
 
-        <div style='background-color:#32688a; color:white; padding:20px; font-size:18px; margin-bottom:10px; height: 400px'>
-            <b>Item Description from the Seller:</b> 99.7%
+        <div style='background-color:{get_shaded_blue(data['Item Description from the Seller'])}; color:white; padding:20px; font-size:18px; margin-bottom:10px; height: 400px'>
+            <b>Item Description from the Seller:</b> {data['Item Description from the Seller']}
         </div>
         """,
         unsafe_allow_html=True
@@ -172,35 +167,31 @@ def render_module_dashboard(source_data):
 
     # === Second Grid ===
     st.markdown(
-    f"""
-    <div style='display: flex; gap: 10px;'>
-        <!-- 左侧 Seller Card BTF -->
-        <div style='flex: 1; background-color:#1f3b73; color:white; padding:10px; font-size:16px; display: flex; flex-direction: column; justify-content: space-between; height: 600px;'>
-            <div>
-                <b>Seller Card BTF Overall:</b> {data['Seller Card BTF Overall']}
-                <div style='display: flex; gap:5px; margin-top:10px;'>
-                    <div style='flex:3; border:2px solid white; padding:6px;'>Seller Logo: {data['Seller Logo']}</div>
-                    <div style='flex:7; border:2px solid white; padding:6px;'>Seller Name: {data['Seller Name']}</div>
+        f"""
+        <div style='display: flex; gap: 10px;'>
+            <div style='flex: 1; background-color:{get_shaded_blue(data['Seller Card BTF Overall'])}; color:white; padding:10px; font-size:16px; display: flex; flex-direction: column; justify-content: space-between; height: 600px;'>
+                <div>
+                    <b>Seller Card BTF Overall:</b> {data['Seller Card BTF Overall']}
+                    <div style='display: flex; gap:5px; margin-top:10px;'>
+                        <div style='flex:3; background-color:{get_shaded_blue(data["Seller Logo"])}; border:2px solid white; padding:6px;'>Seller Logo: {data['Seller Logo']}</div>
+                        <div style='flex:7; background-color:{get_shaded_blue(data["Seller Name"])}; border:2px solid white; padding:6px;'>Seller Name: {data['Seller Name']}</div>
+                    </div>
+                    <div style='margin-top:5px; background-color:{get_shaded_blue(data["Visit Store"])}; border:2px solid white; padding:6px;'>Visit Store: {data['Visit Store']}</div>
+                    <div style='margin-top:5px; background-color:{get_shaded_blue(data["Seller SOI"])}; border:2px solid white; padding:6px;'>Seller SOI: {data['Seller SOI']}</div>
+                    <div style='margin-top:5px; background-color:{get_shaded_blue(data["Contact Seller"])}; border:2px solid white; padding:6px;'>Contact Seller: {data['Contact Seller']}</div>
+                    <div style='margin-top:5px; background-color:{get_shaded_blue(data["Save Seller"])}; border:2px solid white; padding:6px;'>Save Seller: {data['Save Seller']}</div>
+                    <div style='margin-top:5px; background-color:{get_shaded_blue(data["Store Categories"])}; border:2px solid white; padding:6px;'>Store Categories: {data['Store Categories']}</div>
                 </div>
-                <div style='margin-top:5px; border:2px solid white; padding:6px; padding-bottom:20px; margin-top:16px'>Visit Store: {data['Visit Store']}</div>
-                <div style='margin-top:5px; border:2px solid white; padding:6px; padding-bottom:20px'>Seller SOI: {data['Seller SOI']}</div>
-                <div style='margin-top:5px; border:2px solid white; padding:6px; padding-bottom:20px'>Contact Seller: {data['Contact Seller']}</div>
-                <div style='margin-top:5px; border:2px solid white; padding:6px; padding-bottom:20px'>Save Seller: {data['Save Seller']}</div>
-                <div style='margin-top:5px; border:2px solid white; padding:6px; padding-bottom:20px'>Store Categories: {data['Store Categories']}</div>
+                <div style='height:30px;'></div>
             </div>
-            <div style='height:30px;'><!-- padding at bottom --></div>
-        </div>
-        <!-- 右侧 Seller Feedback BTF -->
-        <div style='flex: 1; background-color:#1f3b73; color:white; padding:10px; font-size:16px; position: relative; height: 600px;'>
-            <b>Seller Feedback BTF Overall:</b> {data['Seller Feedback BTF Overall']}
-            <div style='position: absolute; bottom: 10px; left: 10px; border:2px solid white; padding:6px; padding-bottom:20px'>
-                See All Feedback: {data['See All Feedback']}
+            <div style='flex: 1; background-color:{get_shaded_blue(data["Seller Feedback BTF Overall"])}; color:white; padding:10px; font-size:16px; position: relative; height: 600px;'>
+                <b>Seller Feedback BTF Overall:</b> {data['Seller Feedback BTF Overall']}
+                <div style='position: absolute; bottom: 10px; left: 10px; background-color:{get_shaded_blue(data["See All Feedback"])}; border:2px solid white; padding:6px;'>
+                    See All Feedback: {data['See All Feedback']}
+                </div>
             </div>
         </div>
-
-    </div>
-    """, unsafe_allow_html=True
-)
+        """, unsafe_allow_html=True)
 
 def dweb_heatmap_tab():
     with st.sidebar:

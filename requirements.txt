@@ -4,3 +4,4 @@ pyhive
 thrift
 pyspark
 plotly
+ace_tools

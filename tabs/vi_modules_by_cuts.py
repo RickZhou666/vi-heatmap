@@ -1,114 +1,105 @@
 import streamlit as st
-from sidebar.tab3_filters import display_sidebar_tab3
-from utils.data_loader import load_data
-from utils.data_transform import reshape_data, calculate_percentage, format_display_table, df_to_clean_html
+from sidebar.vi_modules_by_cuts_filters import display_sidebar_vi_modules_by_cuts_tab
+from utils.data_loader import load_data_by_cuts
+from utils.data_transform import calculate_percentage_by_cuts, df_to_clean_html_by_cuts, format_display_table_by_cuts, reshape_data_by_cuts
 from utils.query_generator import generate_mysql_query
 import pandas as pd
 
+def run_query_and_update_state(filters: dict, processing_msg):
+    sql = generate_mysql_query(**filters)
+    st.session_state.sql = sql
+    st.code(sql, language="sql")
+
+    with st.spinner(processing_msg):
+        df_raw = load_data_by_cuts()
+        # df_raw = load_hive_data()
+
+    df_flat = reshape_data_by_cuts(df_raw)
+    df_summary = calculate_percentage_by_cuts(df_flat)
+    df_render = format_display_table_by_cuts(df_summary, False)
+
+    st.session_state.df_render = df_render
+    st.session_state.data_loaded = True
+
+
+def get_common_filters():
+    (
+        platforms, auction_type, bsns_vrtcl_name, buyer_segment,
+        enthusiasts_yn, new_buyer_yn, price_bucket, site,
+        traffic_source, session_date_range,
+        engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
+        msku_ind, fcsd_vrtcl_name, itm_condition,
+        viewport_width, source_page_name, metric_tab, cut_by
+    ) = display_sidebar_vi_modules_by_cuts_tab()
+
+    filters = {
+        "platforms": platforms,
+        "auction_type": auction_type,
+        "bsns_vrtcl_name": bsns_vrtcl_name,
+        "buyer_segment": buyer_segment,
+        "enthusiasts_yn": enthusiasts_yn,
+        "new_buyer_yn": new_buyer_yn,
+        "price_bucket": price_bucket,
+        "site": site,
+        "traffic_source": traffic_source,
+        "session_date_range": session_date_range,
+        "engmnt_lv1_desc": engmnt_lv1_desc,
+        "expertise_desc": expertise_desc,
+        "b2c_c2c": b2c_c2c,
+        "avip_cvip": avip_cvip,
+        "msku_ind": msku_ind,
+        "fcsd_vrtcl_name": fcsd_vrtcl_name,
+        "itm_condition": itm_condition,
+        "viewport_width": viewport_width,
+        "source_page_name": source_page_name,
+        "cut_by": cut_by
+    }
+
+    return filters, metric_tab
+
 def vi_modules_by_cuts_tab():
-    import streamlit as st
-
     with st.sidebar:
-        (
-            platforms, auction_type, bsns_vrtcl_name, buyer_segment,
-            enthusiasts_yn, new_buyer_yn, price_bucket, site,
-            traffic_source, session_date_range,
-            engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
-            msku_ind, fcsd_vrtcl_name, itm_condition,
-            viewport_width, source_page_name, metric_tab, cut_by
-        ) = display_sidebar_tab3()
+        filters, metric_tab = get_common_filters()
 
-    def run_query_and_update_state():
-        sql = generate_mysql_query(
-            platforms, auction_type, bsns_vrtcl_name, buyer_segment,
-            enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
-            engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip, msku_ind, fcsd_vrtcl_name, itm_condition,
-            viewport_width, source_page_name
-        )
-        st.session_state.sql = sql
-        st.code(sql, language="sql")
-
-        with st.spinner("Data retrieving in progress..."):
-            df_raw = load_data()
-        df_flat = reshape_data(df_raw)
-        df_summary = calculate_percentage(df_flat)
-
-        # Cache all cut_by × metric_tab combinations
-        cut_options = {
-            "Auction Type": "auction_type",
-            "Bsns Vrtcl Name": "bsns_vrtcl_name",
-            "Enthusiasts YN": "enthusiasts_yn",
-            "Buyer Fm Segment": "buyer_segment",
-            "Platform": "platforms",
-            "Site": "site",
-            "Traffic Source Level1": "traffic_source",
-            "Price Bucket": "price_bucket",
-            "New Buyer YN": "new_buyer_yn"
-        }
-
-        metric_list = [
-            "Surface Rate",
-            "Surface to View Rate",
-            "Surface to Engagement Rate",
-            "Dwell Time Per View (Sec)"
-        ]
-
-        cut_col = cut_options[cut_by]
-        group_values = eval(cut_col) or ["All"]
-
-        render_dict = {}
-
-        for cut in group_values:
-            for metric in metric_list:
-                temp_df = df_summary.copy()
-                if cut != "All":
-                    temp_df = temp_df[temp_df[cut_col] == cut] if cut_col in temp_df.columns else temp_df
-                display_df = temp_df[["module1", "module2", metric]].copy()
-                display_df = display_df.rename(columns={
-                    "module1": "Bucket",
-                    "module2": "Sub Modules",
-                    metric: cut
-                })
-                pivot_df = display_df.pivot_table(index=["Bucket", "Sub Modules"], values=cut, aggfunc="first")
-                pivot_df = pivot_df.reset_index()
-                render_dict[(metric, cut)] = pivot_df
-
-        st.session_state.df_render_by_metric_cut = render_dict
-        st.session_state.data_loaded = True
-
-    # Only run on first entry or Submit
-    tab_key = "tab3_first_run"
-    if tab_key not in st.session_state:
-        st.session_state.first_run = True
-        st.session_state.data_loaded = False
-        run_query_and_update_state()
-        st.session_state.first_run = False
+    if st.session_state.get("vi_modules_by_cuts_first_run", True):
+        st.session_state["data_loaded"] = False
+        run_query_and_update_state(filters, "vi_modules_by_cuts_first_run - Data retrieving in progress...")
+        st.session_state["vi_modules_by_cuts_first_run"] = False
 
     if st.sidebar.button("Submit", type="primary"):
-        run_query_and_update_state()
+        run_query_and_update_state(filters, "after submit - Data retrieving in progress...")
 
-    # Display cached version with dynamic tab switching
-    if st.session_state.data_loaded and "df_render_by_metric_cut" in st.session_state:
-        st.set_page_config(layout="wide")
-        st.title("VI Modules Surface / View / Engagement by Cuts")
 
-        key = (metric_tab, cut_by)
-        match_keys = [k for k in st.session_state.df_render_by_metric_cut.keys() if k[0] == metric_tab]
+    # 如果已有数据，允许自由切换 metric_tab 展示
+    if st.session_state.get("data_loaded", True):
+        df_render = st.session_state.df_render
 
-        # Merge all columns under current metric
-        merged_df = None
-        for k in match_keys:
-            df = st.session_state.df_render_by_metric_cut[k]
-            df = df.rename(columns={k[1]: k[1]})  # use cut value as col
-            if merged_df is None:
-                merged_df = df
-            else:
-                merged_df = pd.merge(merged_df, df, on=["Bucket", "Sub Modules"], how="outer")
+        metric_column_map = {
+            "Surface Rate": "Surface Rate",
+            "Surface to View Rate": "Surface to View Rate",
+            "Surface to Engagement Rate": "Surface to Engagement Rate",
+            "Dwell Time Per View (Sec)": "Dwell Time Per View (Sec)"
+        }
 
-        # Format percent
-        for col in merged_df.columns:
-            if col not in ["Bucket", "Sub Modules"]:
-                merged_df[col] = pd.to_numeric(merged_df[col], errors="coerce")
-                merged_df[col] = merged_df[col].map(lambda x: f"{x:.1%}" if pd.notnull(x) else "")
+        selected_metric = metric_tab
+        if selected_metric in metric_column_map:
+            selected_column = metric_column_map[selected_metric]
+            group_col = df_render.columns[0]
 
-        st.markdown(df_to_clean_html(merged_df), unsafe_allow_html=True)
+            # Pivot 表格
+            pivot_df = df_render.pivot_table(
+                index=["Bucket", "Sub Modules"],
+                columns=group_col,
+                values=selected_column,
+                aggfunc="first"  # 假设每个 Bucket-SubModule-group_col 唯一
+            ).reset_index()
+
+            # 保证列顺序：Bucket, Sub Module, 其它 group_col
+            columns = ["Bucket", "Sub Modules"] + [col for col in pivot_df.columns if col not in ["Bucket", "Sub Modules"]]
+            pivot_df = pivot_df[columns]
+
+            st.title("📊 Vi Modules Surface/ View/ Engagement by Cuts")
+            st.markdown(df_to_clean_html_by_cuts(pivot_df), unsafe_allow_html=True)
+
+        else:
+            st.error("Invalid Metric Tab selected.")

@@ -9,3 +9,4 @@ jpg
 .DS_Store
 data_dummy.csv
 testing_data
+*.csv

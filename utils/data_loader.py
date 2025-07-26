@@ -1,3 +1,4 @@
+import random
 import streamlit as st
 import pandas as pd
 from pyhive import hive
@@ -6,12 +7,25 @@ import time
 # @st.cache_data
 def load_data():
     try:
-        time.sleep(1)
+        time.sleep(1.5)
         df = pd.read_csv("./data.csv")
         print("✅ Can read data.csv.")
         return df
     except FileNotFoundError:
         st.error("❌ Cannot find data.csv. Please make sure it's in the same directory.")
+        st.stop()
+
+def load_data_by_cuts():
+    filenames = ["./data_by_cuts_1.csv", "./data_by_cuts_2.csv"]
+    selected_file = random.choice(filenames)
+    
+    try:
+        time.sleep(1.5)
+        df = pd.read_csv(selected_file)
+        print(f"✅ Can read {selected_file}.")
+        return df
+    except FileNotFoundError:
+        st.error(f"❌ Cannot find {selected_file} Please make sure it's in the same directory.")
         st.stop()
 
 

@@ -2,7 +2,7 @@ def generate_mysql_query(
     platforms, auction_type, bsns_vrtcl_name, buyer_segment,
     enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
     engmnt_lv1_desc=None, expertise_desc=None, b2c_c2c=None, avip_cvip=None, msku_ind=None, fcsd_vrtcl_name=None, itm_condition=None,
-    viewport_width=None, source_page_name=None
+    viewport_width=None, source_page_name=None, cut_by=None
 ):
     filters = []
 
@@ -40,11 +40,12 @@ def generate_mysql_query(
 
     start, end = session_date_range
     filters.append(f"session_start_date BETWEEN '{start}' AND '{end}'")
+    group_by_clause = f"\nGROUP BY '{cut_by}'" if cut_by else ""
 
     where_clause = " AND ".join([f for f in filters if f])
     query = f"""
         SELECT *
         FROM vi_module_metrics
-        WHERE {where_clause}
+        WHERE {where_clause}{group_by_clause}
     """
     return query.strip()

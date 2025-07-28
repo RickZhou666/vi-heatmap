@@ -297,10 +297,11 @@ def df_to_clean_html_by_cuts(df):
         max-width: 100%;
         overflow-x: auto;
         margin: auto;
+        white-space: nowrap;
     }
     .custom-table {
         border-collapse: collapse;
-        width: 100%;
+        width: max-content;
         font-family: sans-serif;
         font-size: 15px;
         table-layout: auto;
@@ -310,6 +311,7 @@ def df_to_clean_html_by_cuts(df):
         text-align: left;
         word-break: break-word;
         border: none;
+        white-space: nowrap;
     }
     .custom-table th {
         border-bottom: 1px solid #ccc;

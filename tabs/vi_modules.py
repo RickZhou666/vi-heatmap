@@ -20,7 +20,7 @@ def run_query_and_update_state(filters: dict, processing_msg):
 
 def get_common_filters():
     (
-        platforms, auction_type, bsns_vrtcl_name, buyer_segment,
+        platforms, auction_type, bsns_vrtcl_name, buyer_fm_segment,
         enthusiasts_yn, new_buyer_yn, price_bucket, site,
         traffic_source, session_date_range,
         engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
@@ -32,7 +32,7 @@ def get_common_filters():
         "platforms": platforms,
         "auction_type": auction_type,
         "bsns_vrtcl_name": bsns_vrtcl_name,
-        "buyer_segment": buyer_segment,
+        "buyer_fm_segment": buyer_fm_segment,
         "enthusiasts_yn": enthusiasts_yn,
         "new_buyer_yn": new_buyer_yn,
         "price_bucket": price_bucket,

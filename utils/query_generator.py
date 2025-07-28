@@ -1,5 +1,7 @@
+import streamlit as st
+
 def generate_mysql_query(
-    platforms, auction_type, bsns_vrtcl_name, buyer_segment,
+    platforms, auction_type, bsns_vrtcl_name, buyer_fm_segment,
     enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
     engmnt_lv1_desc=None, expertise_desc=None, b2c_c2c=None, avip_cvip=None, msku_ind=None, fcsd_vrtcl_name=None, itm_condition=None,
     viewport_width=None, source_page_name=None, cut_by=None
@@ -16,7 +18,7 @@ def generate_mysql_query(
 
     filters.append(build_condition("auction_type", auction_type))
     filters.append(build_condition("business_vertical", bsns_vrtcl_name))
-    filters.append(build_condition("buyer_segment", buyer_segment))
+    filters.append(build_condition("buyer_fm_segment", buyer_fm_segment))
     filters.append(build_condition("enthusiasts_flag", enthusiasts_yn))
     filters.append(build_condition("new_buyer_flag", new_buyer_yn))
     filters.append(build_condition("price_bucket", price_bucket))
@@ -43,6 +45,8 @@ def generate_mysql_query(
     group_by_clause = f"\nGROUP BY '{cut_by}'" if cut_by else ""
 
     where_clause = " AND ".join([f for f in filters if f])
+
+    # st.code(where_clause, language="sql")
     query = f"""
         SELECT *
         FROM vi_module_metrics

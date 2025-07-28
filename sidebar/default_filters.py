@@ -3,7 +3,7 @@ import streamlit as st
 def display_sidebar_common_filters():
     auction_type = st.sidebar.multiselect("Auction Type", ["Auction", "Fixed Price", "Best Offer"], placeholder="(All)")
     bsns_vrtcl_name = st.sidebar.multiselect("Bsns Vrtcl Name", ["Electronics", "Fashion", "Collectibles"], placeholder="(All)")
-    buyer_segment = st.sidebar.multiselect("Buyer Fm Segment", ["Lifestage", "Gender", "Income"], placeholder="(All)")
+    buyer_fm_segment = st.sidebar.multiselect("Buyer Fm Segment", ["Lifestage", "Gender", "Income"], placeholder="(All)")
     enthusiasts_yn = st.sidebar.multiselect("Enthusiasts YN", ["Y", "N"], placeholder="(All)")
     new_buyer_yn = st.sidebar.multiselect("New Buyer YN", ["Y", "N"], placeholder="(All)")
     price_bucket = st.sidebar.multiselect("Price Bucket", ["$0-10", "$10-50", "$50+"], placeholder="(All)")
@@ -20,7 +20,7 @@ def display_sidebar_common_filters():
     source_page_name = st.sidebar.multiselect("Source Page Name", ["Homepage", "Search", "View Item", "Cart"], placeholder="(All)")
 
     return (
-        auction_type, bsns_vrtcl_name, buyer_segment,
+        auction_type, bsns_vrtcl_name, buyer_fm_segment,
         enthusiasts_yn, new_buyer_yn, price_bucket, site,
         traffic_source, engmnt_lv1_desc, expertise_desc, b2c_c2c, avip_cvip,
         msku_ind, fcsd_vrtcl_name, itm_condition, viewport_width, source_page_name

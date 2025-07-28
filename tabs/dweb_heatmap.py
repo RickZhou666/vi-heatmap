@@ -203,10 +203,10 @@ def run_query_and_update_state(filters: dict, processing_msg):
         # df_raw = load_hive_data()
     df_flat = reshape_data(df_raw)
     df_summary = calculate_percentage(df_flat)
-    df_render = format_display_table(df_summary, False)
+    df_render_dweb = format_display_table(df_summary, False)
 
     # 保存到 session_state
-    st.session_state.df_render = df_render
+    st.session_state.df_render_dweb = df_render_dweb
     st.session_state.data_loaded = True
 
 def get_common_filters():
@@ -260,7 +260,7 @@ def dweb_heatmap_tab():
 
     # 如果已有数据，允许自由切换 metric_tab 展示
     if st.session_state.get("data_loaded", True):
-        df_render = st.session_state.df_render
+        df_render_dweb = st.session_state.df_render_dweb
 
         metric_column_map = {
             "Surface Rate": "Surface Rate",
@@ -272,7 +272,7 @@ def dweb_heatmap_tab():
         selected_metric = metric_tab
         if selected_metric in metric_column_map:
             selected_column = metric_column_map[selected_metric]
-            select_data = df_render[["Sub Modules", "Bucket", selected_column]].rename(
+            select_data = df_render_dweb[["Sub Modules", "Bucket", selected_column]].rename(
                 columns={selected_column: selected_metric}
             )
 

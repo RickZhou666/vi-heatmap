@@ -18,7 +18,7 @@ def render_module_dashboard(source_data):
         "Thumbnails Click","Thumbnails Scroll","Product Star Rating",
         "SellerCardATF: Seller Card ATF Overall","SellerCardATF: Seller Logo Name Feedback","SellerCardATF: Contact Seller",
         "Price Details","Vibrancy Coupon","Volume Pricing","Buy It Now","Place bid","Add to cart","Make offer",
-        "Add to Watchlist","Conversational Signals","SME Coupon","Item Specifics","Item Description from the Seller",
+        "Add to Watchlist","Conversational Signals","Promotions","Item Specifics","Item Description from the Seller",
         "Sell Now","Shipping Returns Payment","Shop With Confidence",
         "SellerCardBTF: Seller Card BTF Overall","SellerCardBTF: Seller Logo Name Feedback", "SellerCardBTF: Save Seller","SellerCardBTF: Seller SOI", "SellerCardBTF: Contact Seller",
         "SellerFeedbackBTF: Seller Feedback BTF Overall","SellerFeedbackBTF: This Item",
@@ -105,7 +105,7 @@ def render_module_dashboard(source_data):
     right_col_blocks = "".join([
     render_colored_block(key, data[key], data_color[key]) for key in [
         "Price Details", "Vibrancy Coupon", "Volume Pricing", "Buy It Now", "Place bid",
-        "Add to cart", "Make offer", "Add to Watchlist", "Conversational Signals", "SME Coupon",
+        "Add to cart", "Make offer", "Add to Watchlist", "Conversational Signals", "Promotions",
         "Item Specifics", "Item Description from the Seller",
         "Sell Now", "Shipping Returns Payment", "Shop With Confidence"
         ]
@@ -157,10 +157,10 @@ def run_query_and_update_state(filters: dict, processing_msg):
         # df_raw = load_hive_data()
     df_flat = reshape_data(df_raw)
     df_summary = calculate_percentage(df_flat)
-    df_render = format_display_table(df_summary, False)
+    df_render_mweb = format_display_table(df_summary, False)
 
     # 保存到 session_state
-    st.session_state.df_render = df_render
+    st.session_state.df_render_mweb = df_render_mweb
     st.session_state.data_loaded = True
 
 def get_common_filters():
@@ -215,7 +215,7 @@ def mweb_heatmap_tab():
 
     # 如果已有数据，允许自由切换 metric_tab 展示
     if st.session_state.get("data_loaded", False):
-        df_render = st.session_state.df_render
+        df_render_mweb = st.session_state.df_render_mweb
 
         metric_column_map = {
             "Surface Rate": "Surface Rate",
@@ -227,7 +227,7 @@ def mweb_heatmap_tab():
         selected_metric = metric_tab
         if selected_metric in metric_column_map:
             selected_column = metric_column_map[selected_metric]
-            select_data = df_render[["Sub Modules", "Bucket", selected_column]].rename(
+            select_data = df_render_mweb[["Sub Modules", "Bucket", selected_column]].rename(
                 columns={selected_column: selected_metric}
             )
 

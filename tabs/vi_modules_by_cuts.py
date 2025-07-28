@@ -16,9 +16,9 @@ def run_query_and_update_state(filters: dict, processing_msg):
 
     df_flat = reshape_data_by_cuts(df_raw)
     df_summary = calculate_percentage_by_cuts(df_flat)
-    df_render = format_display_table_by_cuts(df_summary, False)
+    df_render_by_cuts = format_display_table_by_cuts(df_summary, False)
 
-    st.session_state.df_render = df_render
+    st.session_state.df_render_by_cuts = df_render_by_cuts
     st.session_state.data_loaded = True
 
 
@@ -72,7 +72,7 @@ def vi_modules_by_cuts_tab():
 
     # 如果已有数据，允许自由切换 metric_tab 展示
     if st.session_state.get("data_loaded", True):
-        df_render = st.session_state.df_render
+        df_render_by_cuts = st.session_state.df_render_by_cuts
 
         metric_column_map = {
             "Surface Rate": "Surface Rate",
@@ -84,10 +84,10 @@ def vi_modules_by_cuts_tab():
         selected_metric = metric_tab
         if selected_metric in metric_column_map:
             selected_column = metric_column_map[selected_metric]
-            group_col = df_render.columns[0]
+            group_col = df_render_by_cuts.columns[0]
 
             # Pivot 表格
-            pivot_df = df_render.pivot_table(
+            pivot_df = df_render_by_cuts.pivot_table(
                 index=["Bucket", "Sub Modules"],
                 columns=group_col,
                 values=selected_column,

@@ -14,8 +14,8 @@ def run_query_and_update_state(filters: dict, processing_msg):
         # df_raw = load_hive_data()
     df_flat = reshape_data(df_raw)
     df_summary = calculate_percentage(df_flat)
-    df_render = format_display_table(df_summary)
-    st.session_state.df_render = df_render
+    df_render_vi_modules = format_display_table(df_summary)
+    st.session_state.df_render_vi_modules = df_render_vi_modules
     st.session_state.data_loaded = True
 
 def get_common_filters():
@@ -68,8 +68,8 @@ def vi_modules_tab():
         run_query_and_update_state(filters, "after submit - Data retrieving in progress...")
 
     # Display data only after submit, and keep showing until next submit
-    if st.session_state.data_loaded and hasattr(st.session_state, "df_render"):
+    if st.session_state.data_loaded and hasattr(st.session_state, "df_render_vi_modules"):
         st.title("Vi Modules Surface/ View/ Engagement")
         st.set_page_config(layout="wide")
-        st.markdown(df_to_clean_html_with_sort(st.session_state.df_render), unsafe_allow_html=True)
+        st.markdown(df_to_clean_html_with_sort(st.session_state.df_render_vi_modules), unsafe_allow_html=True)
         # components.html(df_to_clean_html_with_sort(st.session_state.df_render), height=2000, scrolling=True)

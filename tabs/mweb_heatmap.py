@@ -61,7 +61,7 @@ def render_module_dashboard(source_data):
     # === Main Grid ===
     st.markdown(
         f"""
-        <div style='{common_style} background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; font-size:16px; border: 3px solid black; border-radius:4px; margin-bottom:10px;'>
+        <div style='{common_style} background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; font-size:16px; border-radius:4px; margin-bottom:10px;'>
             <b>Picture Overall:</b> {data['Picture Overall']}
         </div>
         <div style='{common_style} display: grid; grid-template-columns: 5fr 1fr; gap: 6px; height: 400px;'>

@@ -71,7 +71,7 @@ def render_module_dashboard(source_data):
     # === SME Coupon Bar ===
     st.markdown(
         f"""
-        <div style='{common_style} background-color:{get_shaded_blue(data_color['SME Coupon'])}; padding:10px; font-size:18px;'>
+        <div style='{common_style} color:white; background-color:{get_shaded_blue(data_color['SME Coupon'])}; padding:10px; font-size:18px;'>
             <b>SME Coupon:</b> {data['SME Coupon']}
         </div>
         """,
@@ -145,7 +145,7 @@ def render_module_dashboard(source_data):
         ])
 
         st.markdown(f"""
-        <div style='{common_style} padding:10px 0; display:flex; flex-direction:column; gap:8px;'>
+        <div style='{common_style} color:white; padding:10px 0; display:flex; flex-direction:column; gap:8px;'>
             {right_col_blocks}
         </div>
         """, unsafe_allow_html=True)

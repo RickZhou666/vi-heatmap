@@ -72,7 +72,7 @@ def render_module_dashboard(source_data):
                 <div style='{common_style} position: absolute; bottom: 10px; right: 0px; background-color:{get_shaded_blue(data_color['Watch Icon on Image'])}; color:white; padding:6px; width:150px; border: 3px solid white;'>
                     Watch Icon on Image:<br>{data['Watch Icon on Image']}
                 </div>
-                <div style='{common_style} position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size:18px; font-weight:bold; text-align: center;'>
+                <div style='{common_style} color:white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size:18px; font-weight:bold; text-align: center;'>
                     Main Image Click: {data['Main Image Click']}
                 </div>
             </div>
@@ -112,7 +112,7 @@ def render_module_dashboard(source_data):
     ])
 
     st.markdown(f"""
-    <div style='{common_style} padding:10px 0; display:flex; flex-direction:column; gap:8px;'>
+    <div style='{common_style} color:white; padding:10px 0; display:flex; flex-direction:column; gap:8px;'>
         {right_col_blocks}
     </div>
     """, unsafe_allow_html=True)
@@ -125,11 +125,11 @@ def render_module_dashboard(source_data):
                 <b>Seller Card BTF Overall:</b> {data['SellerCardBTF: Seller Card BTF Overall']}
                 <div style='margin-top:10px; margin-left: 70px; display: flex; flex-direction: column; gap:10px; width: 60%;'>
                     <div style='{common_style} display: flex; gap:5px; margin-top:10px;'>
-                        <div style='{common_style} flex:3; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Logo Name Feedback"])}; border:2px solid white; padding:6px;'>Seller Logo Name Feedback: {data['SellerCardBTF: Seller Logo Name Feedback']}</div>
-                        <div style='{common_style} flex:7; background-color:{get_shaded_blue(data_color["SellerCardBTF: Save Seller"])}; border:2px solid white; padding:6px;'>Save Seller: {data['SellerCardBTF: Save Seller']}</div>
+                        <div style='{common_style} flex:3; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Logo Name Feedback"])}; color:white; border:2px solid white; padding:6px;'>Seller Logo Name Feedback: {data['SellerCardBTF: Seller Logo Name Feedback']}</div>
+                        <div style='{common_style} flex:7; background-color:{get_shaded_blue(data_color["SellerCardBTF: Save Seller"])}; color:white; border:2px solid white; padding:6px;'>Save Seller: {data['SellerCardBTF: Save Seller']}</div>
                     </div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller SOI"])}; border:2px solid white; padding:6px;'>Seller SOI: {data['SellerCardBTF: Seller SOI']}</div>
-                    <div style='{common_style} background-color:{get_shaded_blue(data_color["SellerCardBTF: Contact Seller"])}; border:2px solid white; padding:6px;'>Contact Seller: {data['SellerCardBTF: Contact Seller']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller SOI"])}; color:white; border:2px solid white; padding:6px;'>Seller SOI: {data['SellerCardBTF: Seller SOI']}</div>
+                    <div style='{common_style} background-color:{get_shaded_blue(data_color["SellerCardBTF: Contact Seller"])}; color:white; border:2px solid white; padding:6px;'>Contact Seller: {data['SellerCardBTF: Contact Seller']}</div>
                 </div>
             </div>
             <div style='{common_style} height:30px;'></div>
@@ -138,10 +138,10 @@ def render_module_dashboard(source_data):
             <b>Seller Feedback BTF Overall:</b> {data['SellerFeedbackBTF: Seller Feedback BTF Overall']}
             <div style='margin-top:10px; display: flex; flex-direction: column; gap:10px; width: 60%;'>
                 <div style='{common_style} display: flex; gap:10px; margin-top:10px;'>
-                    <div style='{common_style} flex:1; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: This Item"])}; border:2px solid white; padding:6px;'>This Item: {data['SellerFeedbackBTF: This Item']}</div>
-                    <div style='{common_style} flex:1; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: All Items"])}; border:2px solid white; padding:6px;'>All Items: {data['SellerFeedbackBTF: All Items']}</div>
+                    <div style='{common_style} flex:1; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: This Item"])}; color:white; border:2px solid white; padding:6px;'>This Item: {data['SellerFeedbackBTF: This Item']}</div>
+                    <div style='{common_style} flex:1; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: All Items"])}; color:white; border:2px solid white; padding:6px;'>All Items: {data['SellerFeedbackBTF: All Items']}</div>
                 </div>
-                <div style='margin-top:150px; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: See All Feedback"])}; border:2px solid white; padding:8px; border-radius:4px; display: inline-block;'>
+                <div style='margin-top:150px; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: See All Feedback"])}; color:white; border:2px solid white; padding:8px; border-radius:4px; display: inline-block;'>
                     <b>See All Feedback:</b> {data["SellerFeedbackBTF: See All Feedback"]}
                 </div>
             </div>

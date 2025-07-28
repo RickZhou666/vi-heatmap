@@ -95,7 +95,7 @@ def render_module_dashboard(source_data):
                             Image Thumbnails Arrow Click:<br>{data['Image Thumbnails Arrow Click']}
                         </div>
                     </div>
-                    <div style='{common_style} position: relative; background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; height:400px; width:100%; border:1px solid white;'>
+                    <div style='{common_style} position: relative; background-color:{get_shaded_blue(data_color['Main Image Click'])};; color:white; padding:10px; height:400px; width:100%; border:1px solid white;'>
                         <div style='{common_style} position: absolute; top: 10px; left: 10px; background-color:{get_shaded_blue(data_color['Urgency Signal'])}; padding:6px; font-size:14px; border: 3px solid white;'>
                             Urgency Signal: {data['Urgency Signal']}
                         </div>

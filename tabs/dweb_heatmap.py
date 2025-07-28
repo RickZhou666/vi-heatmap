@@ -69,11 +69,11 @@ def render_module_dashboard(source_data):
 
     # === Main Grid ===
     left_col, right_col = st.columns([6, 2])
-
+    # border: 3px solid black;
     with left_col:
         st.markdown(
             f"""
-            <div style='{common_style} background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; padding-bottom: 50px; font-size:16px; border: 3px solid black;'>
+            <div style='{common_style} background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; padding-bottom: 50px; font-size:16px;'>
                 <b>Picture Overall:</b> {data['Picture Overall']}
                 <div style='{common_style} display:grid; grid-template-columns: 1fr 7fr; gap:2px; margin-top:10px;'>
                     <div style='{common_style} display: grid; grid-template-rows: 7fr 3fr; height: 400px;'>

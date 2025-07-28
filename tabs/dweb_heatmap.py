@@ -15,20 +15,31 @@ def render_module_dashboard(source_data):
         "SME Coupon", "Picture Overall", "Thumbnails Click", "Urgency Signal",
         "Image Enlarge Arrow Click", "Watch Icon on Image", "Main Image Click",
         "Main Image Scroll Arrow Click", "Image Thumbnails Arrow Click",
-        "Seller Card ATF Overall", "Seller Logo", "Seller Name", "Seller Feedback",
-        "Seller SOI", "Contact Seller", "Price Details", "Vibrancy Coupon",
-        "Volume Pricing", "Buy It Now", "Place bid", "Add to cart", "Make offer",
-        "Add to Watchlist", "Conversational Signals", "Shipping", "Returns",
-        "Payment", "Shop With Confidence", "Sell Now", "Item Specifics",
-        "Item Description from the Seller", "Seller Card BTF Overall", "Visit Store",
-        "Save Seller", "Store Categories", "Seller Feedback BTF Overall",
-        "See All Feedback"
+
+        "Price Details", "Vibrancy Coupon", "Volume Pricing", "Buy It Now", "Place bid", 
+        "Add to cart", "Make offer", "Add to Watchlist", "Conversational Signals", "Shipping", "Returns",
+        "Payment", "Shop With Confidence", "Sell Now", "Item Specifics", "Item Description from the Seller", 
+        
+        "SellerCardATF: Seller Card ATF Overall",
+        "SellerCardATF: Seller Logo",
+        "SellerCardATF: Seller Name",
+        "SellerCardATF: Seller Feedback",
+        "SellerCardATF: Seller SOI",
+        "SellerCardATF: Contact Seller",
+
+        "SellerCardBTF: Seller Card BTF Overall",
+        "SellerCardBTF: Seller Logo",
+        "SellerCardBTF: Seller Name",
+        "SellerCardBTF: Visit Store",
+        "SellerCardBTF: Seller SOI",
+        "SellerCardBTF: Contact Seller",
+        "SellerCardBTF: Save Seller",
+        "SellerCardBTF: Store Categories",
+
+        "SellerFeedbackBTF: Seller Feedback BTF Overall",
+        "SellerFeedbackBTF: See All Feedback",
     ]
 
-    # filter out non-required key that might exist multiple time due to diff Bucket
-    blacklist = ["Seller Logo Name Feedback"]
-
-    source_data = source_data[~source_data["Sub Modules"].isin(blacklist)]
     # 保留只需要的列
     if "Sub Modules" not in source_data.columns:
         st.error("❌ Missing required column 'Sub Modules' in input_data")
@@ -111,16 +122,16 @@ def render_module_dashboard(source_data):
 
 
     with right_col:
-        header_color = get_shaded_blue(data_color['Seller Card ATF Overall'])
+        header_color = get_shaded_blue(data_color['SellerCardATF: Seller Card ATF Overall'])
         st.markdown(f"""
         <div style='{common_style} background-color:{header_color}; color:white; padding:10px; font-size:16px; border: 2px solid white;'>
-            <b>Seller Card ATF Overall:</b> {data['Seller Card ATF Overall']}
+            <b>Seller Card ATF Overall:</b> {data['SellerCardATF: Seller Card ATF Overall']}
             <div style='{common_style} display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; margin-top:10px;'>
-                <div style='{common_style} background-color:{get_shaded_blue(data_color['Seller Logo'])}; color:white; padding:6px; border:1px solid white;'>Seller Logo:<br>{data['Seller Logo']}</div>
-                <div style='{common_style} background-color:{get_shaded_blue(data_color['Seller Name'])}; color:white; padding:6px; border:1px solid white;'>Seller Name:<br>{data['Seller Name']}</div>
-                <div style='{common_style} background-color:{get_shaded_blue(data_color['Seller Feedback'])}; color:white; padding:6px; border:1px solid white;'>Seller Feedback:<br>{data['Seller Feedback']}</div>
-                <div style='{common_style} background-color:{get_shaded_blue(data_color['Seller SOI'])}; color:white; padding:6px; border:1px solid white;'>Seller SOI:<br>{data['Seller SOI']}</div>
-                <div style='{common_style} background-color:{get_shaded_blue(data_color['Contact Seller'])}; color:white; padding:6px; border:1px solid white;'>Contact Seller:<br>{data['Contact Seller']}</div>
+                <div style='{common_style} background-color:{get_shaded_blue(data_color['SellerCardATF: Seller Logo'])}; color:white; padding:6px; border:1px solid white;'>Seller Logo:<br>{data['SellerCardATF: Seller Logo']}</div>
+                <div style='{common_style} background-color:{get_shaded_blue(data_color['SellerCardATF: Seller Name'])}; color:white; padding:6px; border:1px solid white;'>Seller Name:<br>{data['SellerCardATF: Seller Name']}</div>
+                <div style='{common_style} background-color:{get_shaded_blue(data_color['SellerCardATF: Seller Feedback'])}; color:white; padding:6px; border:1px solid white;'>Seller Feedback:<br>{data['SellerCardATF: Seller Feedback']}</div>
+                <div style='{common_style} background-color:{get_shaded_blue(data_color['SellerCardATF: Seller SOI'])}; color:white; padding:6px; border:1px solid white;'>Seller SOI:<br>{data['SellerCardATF: Seller SOI']}</div>
+                <div style='{common_style} background-color:{get_shaded_blue(data_color['SellerCardATF: Contact Seller'])}; color:white; padding:6px; border:1px solid white;'>Contact Seller:<br>{data['SellerCardATF: Contact Seller']}</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -158,25 +169,25 @@ def render_module_dashboard(source_data):
     st.markdown(
         f"""
         <div style='{common_style} display: flex; gap: 10px;'>
-            <div style='{common_style} flex: 1; background-color:{get_shaded_blue(data_color['Seller Card BTF Overall'])}; color:white; padding:10px; font-size:16px; display: flex; flex-direction: column; justify-content: space-between; height: 600px;'>
+            <div style='{common_style} flex: 1; background-color:{get_shaded_blue(data_color['SellerCardBTF: Seller Card BTF Overall'])}; color:white; padding:10px; font-size:16px; display: flex; flex-direction: column; justify-content: space-between; height: 600px;'>
                 <div>
-                    <b>Seller Card BTF Overall:</b> {data['Seller Card BTF Overall']}
+                    <b>Seller Card BTF Overall:</b> {data['SellerCardBTF: Seller Card BTF Overall']}
                     <div style='{common_style} display: flex; gap:5px; margin-top:10px;'>
-                        <div style='{common_style} flex:3; background-color:{get_shaded_blue(data_color["Seller Logo"])}; border:2px solid white; padding:6px;'>Seller Logo: {data['Seller Logo']}</div>
-                        <div style='{common_style} flex:7; background-color:{get_shaded_blue(data_color["Seller Name"])}; border:2px solid white; padding:6px;'>Seller Name: {data['Seller Name']}</div>
+                        <div style='{common_style} flex:3; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Logo"])}; border:2px solid white; padding:6px;'>Seller Logo: {data['SellerCardBTF: Seller Logo']}</div>
+                        <div style='{common_style} flex:7; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Name"])}; border:2px solid white; padding:6px;'>Seller Name: {data['SellerCardBTF: Seller Name']}</div>
                     </div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["Visit Store"])}; border:2px solid white; padding:6px;'>Visit Store: {data['Visit Store']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["Seller SOI"])}; border:2px solid white; padding:6px;'>Seller SOI: {data['Seller SOI']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["Contact Seller"])}; border:2px solid white; padding:6px;'>Contact Seller: {data['Contact Seller']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["Save Seller"])}; border:2px solid white; padding:6px;'>Save Seller: {data['Save Seller']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["Store Categories"])}; border:2px solid white; padding:6px;'>Store Categories: {data['Store Categories']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Visit Store"])}; border:2px solid white; padding:6px;'>Visit Store: {data['SellerCardBTF: Visit Store']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller SOI"])}; border:2px solid white; padding:6px;'>Seller SOI: {data['SellerCardBTF: Seller SOI']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Contact Seller"])}; border:2px solid white; padding:6px;'>Contact Seller: {data['SellerCardBTF: Contact Seller']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Save Seller"])}; border:2px solid white; padding:6px;'>Save Seller: {data['SellerCardBTF: Save Seller']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Store Categories"])}; border:2px solid white; padding:6px;'>Store Categories: {data['SellerCardBTF: Store Categories']}</div>
                 </div>
                 <div style='{common_style} height:30px;'></div>
             </div>
-            <div style='{common_style} flex: 1; background-color:{get_shaded_blue(data_color["Seller Feedback BTF Overall"])}; color:white; padding:10px; font-size:16px; position: relative; height: 600px;'>
-                <b>Seller Feedback BTF Overall:</b> {data['Seller Feedback BTF Overall']}
-                <div style='{common_style} position: absolute; bottom: 10px; left: 10px; background-color:{get_shaded_blue(data_color["See All Feedback"])}; border:2px solid white; padding:6px;'>
-                    See All Feedback: {data['See All Feedback']}
+            <div style='{common_style} flex: 1; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: Seller Feedback BTF Overall"])}; color:white; padding:10px; font-size:16px; position: relative; height: 600px;'>
+                <b>Seller Feedback BTF Overall:</b> {data['SellerFeedbackBTF: Seller Feedback BTF Overall']}
+                <div style='{common_style} position: absolute; bottom: 10px; left: 10px; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: See All Feedback"])}; border:2px solid white; padding:6px;'>
+                    See All Feedback: {data['SellerFeedbackBTF: See All Feedback']}
                 </div>
             </div>
         </div>
@@ -192,7 +203,7 @@ def run_query_and_update_state(filters: dict, processing_msg):
         # df_raw = load_hive_data()
     df_flat = reshape_data(df_raw)
     df_summary = calculate_percentage(df_flat)
-    df_render = format_display_table(df_summary)
+    df_render = format_display_table(df_summary, False)
 
     # 保存到 session_state
     st.session_state.df_render = df_render
@@ -264,14 +275,16 @@ def dweb_heatmap_tab():
             select_data = df_render[["Sub Modules", "Bucket", selected_column]].rename(
                 columns={selected_column: selected_metric}
             )
-            # Contact Seller 特例保留 BTF
-            mask = (select_data["Sub Modules"] == "Contact Seller")
-            select_data = pd.concat([
-                select_data[mask & (select_data["Bucket"] == "SellerCardBTF")],
-                select_data[~mask]
-            ], ignore_index=True)
-            select_data = select_data.drop(columns=["Bucket"])
 
+            # 合成唯一标识字段：如果是 SellerCardATF/BTF/FeedbackBTF 则加上 Bucket 前缀
+            duplicate_bucket_prefixes = ["SellerCardATF", "SellerCardBTF", "SellerFeedbackBTF"]
+            select_data["Sub Modules"] = select_data.apply(
+                lambda row: f"{row['Bucket']}: {row['Sub Modules']}"
+                if row["Bucket"] in duplicate_bucket_prefixes else row["Sub Modules"],
+                axis=1
+            )
+
+            select_data = select_data.drop(columns=["Bucket"])
             st.title("Module Engagement Treemap")
             render_module_dashboard(select_data)
         else:

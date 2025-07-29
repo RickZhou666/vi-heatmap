@@ -241,10 +241,11 @@ def df_to_clean_html(df):
         max-width: 100%;
         overflow-x: auto;
         margin: auto;
+        white-space: nowrap;
     }
     .custom-table {
         border-collapse: collapse;
-        width: 100%;
+        width: max-content;
         font-family: sans-serif;
         /* font-family: "Impact", "Comic Sans MS", fantasy; */
         font-size: 15px;
@@ -254,6 +255,7 @@ def df_to_clean_html(df):
         padding: 8px 12px;
         text-align: left;
         word-break: break-word;
+        white-space: nowrap;
     }
     .custom-table td {
         border: none;

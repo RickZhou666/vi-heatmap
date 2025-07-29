@@ -1,7 +1,7 @@
 import streamlit as st
 from sidebar.vi_modules_by_cuts_filters import display_sidebar_vi_modules_by_cuts_tab
 from utils.data_loader import load_data_by_cuts
-from utils.data_transform import calculate_percentage_by_cuts, df_to_clean_html_by_cuts, format_display_table_by_cuts, reshape_data_by_cuts
+from utils.data_transform import reshape_data_by_cuts, calculate_percentage_by_cuts, format_display_table_by_cuts, df_to_clean_html_by_cuts
 from utils.query_generator import generate_mysql_query
 import pandas as pd
 

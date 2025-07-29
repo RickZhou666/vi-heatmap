@@ -71,7 +71,7 @@ def render_module_dashboard(source_data):
     # === SME Coupon Bar ===
     st.markdown(
         f"""
-        <div style='{common_style} color:white; background-color:{get_shaded_blue(data_color['SME Coupon'])}; padding:10px; font-size:18px;'>
+        <div style='{common_style} color:white; background-color:{get_shaded_blue(data_color['SME Coupon'])}; padding:10px; font-size:16px;'>
             <b>SME Coupon:</b> {data['SME Coupon']}
         </div>
         """,
@@ -84,37 +84,37 @@ def render_module_dashboard(source_data):
     with left_col:
         st.markdown(
             f"""
-            <div style='{common_style} background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; padding-bottom: 50px; font-size:16px;'>
+            <div style='{common_style} background-color:{get_shaded_blue(data_color['Picture Overall'])}; color:white; padding:10px; padding-bottom: 20px; font-size:16px;'>
                 <b>Picture Overall:</b> {data['Picture Overall']}
                 <div style='{common_style} display:grid; grid-template-columns: 1fr 7fr; gap:2px; margin-top:10px;'>
-                    <div style='{common_style} display: grid; grid-template-rows: 7fr 3fr; height: 400px;'>
-                        <div style='{common_style} background-color:{get_shaded_blue(data_color['Thumbnails Click'])}; color:white; writing-mode: sideways-lr; text-align:right; padding:10px; border: 3px solid white;'>
-                            Thumbnails Click:<br>{data['Thumbnails Click']}
+                    <div style='{common_style} display: flex; flex-direction: column; height: 400px;'>
+                        <div style='{common_style} flex: 7; background-color:{get_shaded_blue(data_color["Thumbnails Click"])}; color:white; writing-mode: sideways-lr; text-align:right; padding:10px; border: 1px solid white;'>
+                            Thumbnails Click:<br>{data["Thumbnails Click"]}
                         </div>
-                        <div style='{common_style} background-color:{get_shaded_blue(data_color['Image Thumbnails Arrow Click'])}; color:white; writing-mode: sideways-lr; text-align:right; padding:6px; border: 3px solid white;'>
-                            Image Thumbnails Arrow Click:<br>{data['Image Thumbnails Arrow Click']}
+                        <div style='{common_style} flex: 3; background-color:{get_shaded_blue(data_color["Image Thumbnails Arrow Click"])}; color:white; writing-mode: sideways-lr; text-align:right; padding:10px; border: 1px solid white;'>
+                            Image Thumbnails Arrow Click:<br>{data["Image Thumbnails Arrow Click"]}
                         </div>
                     </div>
-                    <div style='{common_style} position: relative; background-color:{get_shaded_blue(data_color['Main Image Click'])};; color:white; padding:10px; height:400px; width:100%; border:1px solid white;'>
-                        <div style='{common_style} position: absolute; top: 10px; left: 10px; background-color:{get_shaded_blue(data_color['Urgency Signal'])}; padding:6px; font-size:14px; border: 3px solid white;'>
+                    <div style='{common_style} position: relative; background-color:{get_shaded_blue(data_color['Main Image Click'])};; color:white; padding:10px; height:390px; width:100%; border: 1px solid white;'>
+                        <div style='{common_style} position: absolute; top: 10px; left: 10px; background-color:{get_shaded_blue(data_color['Urgency Signal'])}; padding:6px; font-size:16px; border: 1px solid white;'>
                             Urgency Signal: {data['Urgency Signal']}
                         </div>
-                        <div style='{common_style} position: absolute; top: 10px; right: 155px; background-color:{get_shaded_blue(data_color['Image Enlarge Arrow Click'])}; color:white; padding:6px; width:150px; border: 3px solid white;'>
+                        <div style='{common_style} position: absolute; top: 10px; right: 160px; background-color:{get_shaded_blue(data_color['Image Enlarge Arrow Click'])}; color:white; padding:6px; width:150px; border: 1px solid white;'>
                             Image Enlarge Arrow Click:<br>{data['Image Enlarge Arrow Click']}
                         </div>
-                        <div style='{common_style} position: absolute; top: 10px; right: 0px; background-color:{get_shaded_blue(data_color['Watch Icon on Image'])}; color:white; padding:6px; width:150px; border: 3px solid white;'>
+                        <div style='{common_style} position: absolute; top: 10px; right: 5px; background-color:{get_shaded_blue(data_color['Watch Icon on Image'])}; color:white; padding:6px; width:150px; border: 1px solid white;'>
                             Watch Icon on Image:<br>{data['Watch Icon on Image']}
                         </div>
-                        <div style='{common_style} position: absolute; top: 40%; right: 0px; background-color:{get_shaded_blue(data_color['Main Image Scroll Arrow Click'])}; color:white; padding:6px; width:170px; border: 3px solid white;'>
+                        <div style='{common_style} position: absolute; top: 40%; right: 5px; background-color:{get_shaded_blue(data_color['Main Image Scroll Arrow Click'])}; color:white; padding:6px; width:170px; border: 1px solid white;'>
                             Main Image Scroll Arrow Click:<br>{data['Main Image Scroll Arrow Click']}
                         </div>
-                        <div style='{common_style} position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size:18px; font-weight:bold; text-align: center;'>
+                        <div style='{common_style} position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size:16px; text-align: center;'>
                             Main Image Click: {data['Main Image Click']}
                         </div>
                     </div>
                 </div>
             </div>
-            <div style='{common_style} background-color:{get_shaded_blue(data_color['Sell Now'])}; padding:10px; font-size:18px; color:white;'>
+            <div style='{common_style} background-color:{get_shaded_blue(data_color['Sell Now'])}; padding:10px; font-size:16px; color:white;'>
                 <b>Sell Now:</b> {data['Sell Now']}
             </div>
             """, unsafe_allow_html=True
@@ -124,7 +124,7 @@ def render_module_dashboard(source_data):
     with right_col:
         header_color = get_shaded_blue(data_color['SellerCardATF: Seller Card ATF Overall'])
         st.markdown(f"""
-        <div style='{common_style} background-color:{header_color}; color:white; padding:10px; font-size:16px; border: 2px solid white;'>
+        <div style='{common_style} background-color:{header_color}; color:white; padding:10px; font-size:16px;'>
             <b>Seller Card ATF Overall:</b> {data['SellerCardATF: Seller Card ATF Overall']}
             <div style='{common_style} display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; margin-top:10px;'>
                 <div style='{common_style} background-color:{get_shaded_blue(data_color['SellerCardATF: Seller Logo'])}; color:white; padding:6px; border:1px solid white;'>Seller Logo:<br>{data['SellerCardATF: Seller Logo']}</div>
@@ -153,11 +153,11 @@ def render_module_dashboard(source_data):
     # === Middile Grid ===
     st.markdown(
         f"""
-        <div style='{common_style} background-color:{get_shaded_blue(data_color['Item Specifics'])}; color:white; padding:20px; font-size:18px; margin-bottom:10px; height: 200px'>
+        <div style='{common_style} background-color:{get_shaded_blue(data_color['Item Specifics'])}; color:white; padding:20px; font-size:16px; margin-bottom:10px; height: 200px'>
             <b>Item Specifics:</b> {data['Item Specifics']}
         </div>
 
-        <div style='{common_style} background-color:{get_shaded_blue(data_color['Item Description from the Seller'])}; color:white; padding:20px; font-size:18px; margin-bottom:10px; height: 400px'>
+        <div style='{common_style} background-color:{get_shaded_blue(data_color['Item Description from the Seller'])}; color:white; padding:20px; font-size:16px; margin-bottom:10px; height: 400px'>
             <b>Item Description from the Seller:</b> {data['Item Description from the Seller']}
         </div>
         """,
@@ -173,20 +173,20 @@ def render_module_dashboard(source_data):
                 <div>
                     <b>Seller Card BTF Overall:</b> {data['SellerCardBTF: Seller Card BTF Overall']}
                     <div style='{common_style} display: flex; gap:5px; margin-top:10px;'>
-                        <div style='{common_style} flex:3; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Logo"])}; border:2px solid white; padding:6px;'>Seller Logo: {data['SellerCardBTF: Seller Logo']}</div>
-                        <div style='{common_style} flex:7; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Name"])}; border:2px solid white; padding:6px;'>Seller Name: {data['SellerCardBTF: Seller Name']}</div>
+                        <div style='{common_style} flex:3; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Logo"])}; border:1px solid white; padding:6px;'>Seller Logo: {data['SellerCardBTF: Seller Logo']}</div>
+                        <div style='{common_style} flex:7; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller Name"])}; border:1px solid white; padding:6px;'>Seller Name: {data['SellerCardBTF: Seller Name']}</div>
                     </div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Visit Store"])}; border:2px solid white; padding:6px;'>Visit Store: {data['SellerCardBTF: Visit Store']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller SOI"])}; border:2px solid white; padding:6px;'>Seller SOI: {data['SellerCardBTF: Seller SOI']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Contact Seller"])}; border:2px solid white; padding:6px;'>Contact Seller: {data['SellerCardBTF: Contact Seller']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Save Seller"])}; border:2px solid white; padding:6px;'>Save Seller: {data['SellerCardBTF: Save Seller']}</div>
-                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Store Categories"])}; border:2px solid white; padding:6px;'>Store Categories: {data['SellerCardBTF: Store Categories']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Visit Store"])}; border:1px solid white; padding:6px;'>Visit Store: {data['SellerCardBTF: Visit Store']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Seller SOI"])}; border:1px solid white; padding:6px;'>Seller SOI: {data['SellerCardBTF: Seller SOI']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Contact Seller"])}; border:1px solid white; padding:6px;'>Contact Seller: {data['SellerCardBTF: Contact Seller']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Save Seller"])}; border:1px solid white; padding:6px;'>Save Seller: {data['SellerCardBTF: Save Seller']}</div>
+                    <div style='{common_style} margin-top:5px; background-color:{get_shaded_blue(data_color["SellerCardBTF: Store Categories"])}; border:1px solid white; padding:6px;'>Store Categories: {data['SellerCardBTF: Store Categories']}</div>
                 </div>
                 <div style='{common_style} height:30px;'></div>
             </div>
             <div style='{common_style} flex: 1; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: Seller Feedback BTF Overall"])}; color:white; padding:10px; font-size:16px; position: relative; height: 600px;'>
                 <b>Seller Feedback BTF Overall:</b> {data['SellerFeedbackBTF: Seller Feedback BTF Overall']}
-                <div style='{common_style} position: absolute; bottom: 10px; left: 10px; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: See All Feedback"])}; border:2px solid white; padding:6px;'>
+                <div style='{common_style} position: absolute; bottom: 10px; left: 10px; background-color:{get_shaded_blue(data_color["SellerFeedbackBTF: See All Feedback"])}; border:1px solid white; padding:6px;'>
                     See All Feedback: {data['SellerFeedbackBTF: See All Feedback']}
                 </div>
             </div>

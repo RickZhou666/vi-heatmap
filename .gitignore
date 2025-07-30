@@ -11,3 +11,4 @@ data_dummy.csv
 testing_data
 *.csv
 tools
+.streamlit

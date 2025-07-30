@@ -2,7 +2,7 @@ import streamlit as st
 
 def generate_mysql_query(
     platforms, auction_type, bsns_vrtcl_name, buyer_fm_segment,
-    enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, session_date_range,
+    enthusiasts_yn, new_buyer_yn, price_bucket, site, traffic_source, retail_wk_end_date,
     engmnt_lv1_desc=None, expertise_desc=None, b2c_c2c=None, avip_cvip=None, msku_ind=None, fcsd_vrtcl_name=None, itm_condition=None,
     viewport_width=None, source_page_name=None, cut_by=None
 ):
@@ -40,8 +40,8 @@ def generate_mysql_query(
         platform_condition = "platform IN (" + ",".join(f"'{p}'" for p in platforms) + ")"
         filters.append(platform_condition)
 
-    start, end = session_date_range
-    filters.append(f"session_start_date BETWEEN '{start}' AND '{end}'")
+    start, end = retail_wk_end_date
+    filters.append(f"RETAIL_WK_END_DATE BETWEEN '{start}' AND '{end}'")
     group_by_clause = f"\nGROUP BY '{cut_by}'" if cut_by else ""
 
     where_clause = " AND ".join([f for f in filters if f])

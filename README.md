@@ -45,6 +45,20 @@ if first_run not in st.session_state:
 每次你和页面交互（如选 filter、切换 tab、拖动 slider）都会触发一次 脚本 rerun。所以你必须通过 st.session_state 显式控制「哪些逻辑只能跑一次」。
 
 
+2. 初始化 load_weekly_dates()在不同的tab中切换会被重复调用，避免这种情况，使用cache
+```python
+@st.cache_data
+def load_weekly_dates():
+    try:
+        time.sleep(0.5)
+        df = pd.read_csv("./weekly_dates.csv")
+        print("✅ Can read weekly_dates.csv.")
+        return df
+    except FileNotFoundError:
+        st.error("❌ Cannot find weekly_dates.csv. Please make sure it's in the same directory.")
+        st.stop()
+```
+
 
 
 <br><br><br>

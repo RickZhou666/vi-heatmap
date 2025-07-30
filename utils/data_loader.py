@@ -4,6 +4,22 @@ import pandas as pd
 from pyhive import hive
 import time
 
+
+@st.cache_data
+def load_weekly_dates():
+    try:
+        time.sleep(0.5)
+        df = pd.read_csv("./weekly_dates.csv")
+        print("✅ Can read weekly_dates.csv.")
+        return df
+    except FileNotFoundError:
+        st.error("❌ Cannot find weekly_dates.csv. Please make sure it's in the same directory.")
+        st.stop()
+
+@st.cache_data
+def load_hive_weekly_dates():
+    pass
+
 # @st.cache_data
 def load_data():
     try:
@@ -18,7 +34,7 @@ def load_data():
 def load_data_by_cuts():
     filenames = ["./data_by_cuts_1.csv", "./data_by_cuts_2.csv"]
     selected_file = random.choice(filenames)
-    
+
     try:
         time.sleep(1.5)
         df = pd.read_csv(selected_file)

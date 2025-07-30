@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 import streamlit.components.v1 as components
 from sidebar.vi_modules_filters import display_sidebar_vi_modules_tab
@@ -12,9 +13,15 @@ def run_query_and_update_state(filters: dict, processing_msg):
     with st.spinner(processing_msg):
         df_raw = load_data()
         # df_raw = load_hive_data()
-    df_flat = reshape_data(df_raw)
-    df_summary = calculate_percentage(df_flat)
-    df_render_vi_modules = format_display_table(df_summary)
+
+    with st.spinner("Data retriving completed. Graph rendering in progress..."):
+        df_flat = reshape_data(df_raw)
+        df_summary = calculate_percentage(df_flat)
+        df_render_vi_modules = format_display_table(df_summary)
+        time.sleep(2)
+
+    with st.spinner("Graph rendering completed. AI summary generating in progress..."):
+        time.sleep(2)
     st.session_state.df_render_vi_modules = df_render_vi_modules
     st.session_state.data_loaded = True
 

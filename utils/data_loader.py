@@ -9,7 +9,7 @@ import time
 def load_weekly_dates():
     try:
         time.sleep(0.5)
-        df = pd.read_csv("./weekly_dates.csv")
+        df = pd.read_csv("./testing_data/weekly_dates.csv")
         print("✅ Can read weekly_dates.csv.")
         return df
     except FileNotFoundError:
@@ -23,8 +23,9 @@ def load_hive_weekly_dates():
 # @st.cache_data
 def load_data():
     try:
-        time.sleep(1.5)
-        df = pd.read_csv("./data.csv")
+        time.sleep(2)
+        # df = pd.read_csv("./testing_data/data.csv")
+        df = pd.read_csv("./testing_data/data_total_pv.csv")
         print("✅ Can read data.csv.")
         return df
     except FileNotFoundError:
@@ -32,7 +33,8 @@ def load_data():
         st.stop()
 
 def load_data_by_cuts():
-    filenames = ["./data_by_cuts_1.csv", "./data_by_cuts_2.csv"]
+    filenames = ["./testing_data/data_by_cuts_1_totalpv.csv", "./testing_data/data_by_cuts_2_totalpv.csv"]
+    # filenames = ["./testing_data/data_by_cuts_1.csv", "./testing_data/data_by_cuts_2.csv"]
     selected_file = random.choice(filenames)
 
     try:

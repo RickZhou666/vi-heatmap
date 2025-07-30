@@ -59,6 +59,28 @@ def load_weekly_dates():
         st.stop()
 ```
 
+3. what this line does?
+```python
+v_mapping = df_flat[
+        (df_flat["module1"] == "total") & (df_flat["module2"] == "totalpv")
+    ][[group_col, "pv"]].set_index(group_col)["pv"].to_dict()
+
+# 1. 过滤条件 
+df_flat[
+    (df_flat["module1"] == "total") & (df_flat["module2"] == "totalpv")
+]
+
+# 2. 选择列
+[[group_col, "pv"]]
+
+# 3. 设置索引并取出"pv"列["pv"]
+.set_index(group_col)["pv"]
+
+# 4. 转换为字典
+.to_dict()
+
+```
+
 
 
 <br><br><br>

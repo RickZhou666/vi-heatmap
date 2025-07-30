@@ -39,14 +39,15 @@ def reshape_data_by_cuts(df_raw):
     return pd.DataFrame(rows)
 
 def calculate_percentage(df_flat):
+    total_pv = df_flat.iloc[0]["pv"]
     df_combined = df_flat.groupby(["module1", "module2"]).agg({
-        "pv": "first",
+        # "pv": "first",
         "serve": "first",
         "view": "first",
         "engage": "first",
         "dwelltime": "first"
     }).reset_index()
-    # st.write("🔍 pivoted Data:", df_combined)
+    df_combined["pv"] = total_pv
 
     df_combined["Surface Rate"] = df_combined["serve"] / df_combined["pv"]
     df_combined["Surface to View Rate"] = df_combined["view"] / df_combined["serve"]
@@ -72,13 +73,20 @@ def calculate_percentage(df_flat):
 
 def calculate_percentage_by_cuts(df_flat):
     group_col = df_flat.columns[0]
+    # 提取每个 group 的 totalpv 值
+    pv_mapping = df_flat[
+        (df_flat["module1"] == "total") & (df_flat["module2"] == "totalpv")
+    ][[group_col, "pv"]].set_index(group_col)["pv"].to_dict()
+    # st.write("pv_mapping:", pv_mapping)
+
     df_combined = df_flat.groupby([group_col, "module1", "module2"]).agg({
-        "pv": "first",
+        # "pv": "first",
         "serve": "first",
         "view": "first",
         "engage": "first",
         "dwelltime": "first"
     }).reset_index()
+    df_combined["pv"] = df_combined[group_col].map(pv_mapping)
     # st.write("🔍 pivoted Data:", df_combined)
 
     df_combined["Surface Rate"] = df_combined["serve"] / df_combined["pv"]

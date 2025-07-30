@@ -41,7 +41,7 @@ def render_module_dashboard(source_data):
             values = input_dict[module]
             val = values.get(source_data.columns[1], None)
 
-            if pd.isna(val):
+            if pd.isna(val) or str(val).strip().lower() == "nan":
                 # 👇 对 NaN 单独处理
                 output_dict[module] = "N/A"
                 data_color[module] = 0.0

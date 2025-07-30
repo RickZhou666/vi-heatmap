@@ -44,12 +44,12 @@ def load_data_by_cuts():
         st.error(f"❌ Cannot find {selected_file} Please make sure it's in the same directory.")
         st.stop()
 
-
-def load_hive_data():
+@st.cache_data
+def load_hive_data(sql):
     try:
         conn = hive.Connection(host='your_hive_host', port=10000, username='your_username', database='your_database')
-        query = "SELECT * FROM your_table"
-        df = pd.read_sql(query, conn)
+        # query = "SELECT * FROM your_table"
+        df = pd.read_sql(sql, conn)
         conn.close()
         return df
     except Exception as e:

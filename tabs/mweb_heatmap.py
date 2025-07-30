@@ -39,10 +39,17 @@ def render_module_dashboard(source_data):
     for module in required_modules:
         if module in input_dict:
             values = input_dict[module]
-            raw_value = values.get(source_data.columns[1], "N/A")
-            normalized_val = values.get("normalized", 0.0)
-            output_dict[module] = raw_value
-            data_color[module] = normalized_val
+            val = values.get(source_data.columns[1], None)
+
+            if pd.isna(val):
+                # 👇 对 NaN 单独处理
+                output_dict[module] = "N/A"
+                data_color[module] = 0.0
+            else:
+                raw_value = val
+                normalized_val = values.get("normalized", 0.0)
+                output_dict[module] = raw_value
+                data_color[module] = normalized_val
         else:
             output_dict[module] = "N/A"
             data_color[module] = 0.0

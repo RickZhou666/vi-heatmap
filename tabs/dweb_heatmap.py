@@ -4,6 +4,7 @@ from utils.data_loader import load_data
 from utils.data_transform import reshape_data, calculate_percentage, format_display_table, df_to_clean_html
 from utils.query_generator import generate_mysql_query
 from utils.color_render import get_percent_band_color, render_colored_block, to_float
+import pandas as pd
 
 def render_module_dashboard(source_data):
     source_data["value_numeric"] = source_data.iloc[:, 1].apply(to_float)
@@ -53,10 +54,17 @@ def render_module_dashboard(source_data):
     for module in required_modules:
         if module in input_dict:
             values = input_dict[module]
-            raw_value = values.get(source_data.columns[1], "N/A")
-            normalized_val = values.get("normalized", 0.0)
-            output_dict[module] = raw_value
-            data_color[module] = normalized_val
+            val = values.get(source_data.columns[1], None)
+
+            if pd.isna(val):
+                # 👇 对 NaN 单独处理
+                output_dict[module] = "N/A"
+                data_color[module] = 0.0
+            else:
+                raw_value = val
+                normalized_val = values.get("normalized", 0.0)
+                output_dict[module] = raw_value
+                data_color[module] = normalized_val
         else:
             output_dict[module] = "N/A"
             data_color[module] = 0.0
